@@ -13,8 +13,8 @@ JSON = "JSON"
 BSON = "BSON"
 
 # Set the serialization method you want to test
-# TEST_MODE = JSON
-TEST_MODE = BSON
+TEST_MODE = JSON
+# TEST_MODE = BSON
 
 TCP_IP = '127.0.0.1'
 TCP_PORT = 9090
