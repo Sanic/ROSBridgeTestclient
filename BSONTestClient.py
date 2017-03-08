@@ -79,14 +79,17 @@ if TEST_MODE == BSON:
     s.send(encode_message(advertise_msg))
     s.send(encode_message(pub_msg))
     s.send(encode_message(call_service_msg))
-
-else:
+elif TEST_MODE == JSON:
     print("Sending JSON data")
     s.send(encode_message(advertise_msg))
     time.sleep(0.1)  # Add delay to cause message to be sent in separate tcp packets
     s.send(encode_message(pub_msg))
     time.sleep(0.1)  # Add delay to cause message to be sent in separate tcp packets
     s.send(encode_message(call_service_msg))
+else:
+    print("Invalid test mode")
+    s.close()
+    quit(1)
 
 data = s.recv(BUFFER_SIZE)
 print("Received "+ TEST_MODE +" response :")
