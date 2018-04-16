@@ -8,41 +8,6 @@ import pprint
 import websocket
 import argparse
 
-
-parser = argparse.ArgumentParser(description='ROSBridge test client for JSON and BSON. Checks if a) the client can publish to a topic and b) if a service call can be made.')
-
-parser.add_argument('--tcp', action="store_true", default=False)
-parser.add_argument('--websocket', action="store_true", default=False)
-
-parser.add_argument('--json', action="store_true", default=False)
-parser.add_argument('--bson', action="store_true", default=False)
-print(parser)
-sys.exit(0)
-
-print("BSON-ROSBridge Testclient")
-
-# Setting up the constants for the different parameters
-JSON = "JSON"
-BSON = "BSON"
-TCP = "TCP"
-WEBSOCKET = "WEBSOCKET"
-
-# Set the serialization method you want to test
-# TEST_MODE = JSON
-TEST_MODE = BSON
-
-# Set the communication method you want to test
-# COMMUNICATION_METHOD = TCP
-COMMUNICATION_METHOD = WEBSOCKET
-
-# TCP Parameters
-TCP_IP = '127.0.0.1'
-TCP_PORT = 9090
-BUFFER_SIZE = 4096
-
-# Websocket Parameters
-WEBSOCKET_URL = "ws://"+TCP_IP+":"+str(TCP_PORT)
-
 def encode_message(msg):
     if TEST_MODE == JSON:
         return json.dumps(msg)
@@ -62,6 +27,58 @@ def websocket_send_wrapper(webs,data):
         webs.send_binary(encode_message(data))
     else:
         webs.send(encode_message(data))
+
+# Set up command line argument parser
+parser = argparse.ArgumentParser(description='ROSBridge test client for JSON and BSON. Checks if a) the client can publish to a topic and b) if a service call can be made.')
+serialization_group = parser.add_mutually_exclusive_group(required=False)
+serialization_group.add_argument('--tcp', action="store_true", default=False)
+serialization_group.add_argument('--websocket', action="store_true", default=False)
+
+communication_method_group = parser.add_mutually_exclusive_group(required=False)
+communication_method_group.add_argument('--json', action="store_true", default=False)
+communication_method_group.add_argument('--bson', action="store_true", default=False)
+
+args = parser.parse_args()
+
+print("BSON-ROSBridge Testclient")
+
+# Setting up the constants for the different parameters
+JSON = "JSON"
+BSON = "BSON"
+TCP = "TCP"
+WEBSOCKET = "WEBSOCKET"
+
+# Set the serialization method you want to test
+# Warning: Might be overritten by CL arguments
+# TEST_MODE = JSON
+TEST_MODE = BSON
+
+# Set the communication method you want to test
+# Warning: Might be overritten by CL arguments
+# COMMUNICATION_METHOD = TCP
+COMMUNICATION_METHOD = WEBSOCKET
+
+# Connection Parameters
+TCP_IP = '127.0.0.1'
+TCP_PORT = 9090
+BUFFER_SIZE = 4096
+
+# Websocket Parameters
+WEBSOCKET_URL = "ws://"+TCP_IP+":"+str(TCP_PORT)
+
+# Apply CL arguments, if necessary
+if args.bson:
+    TEST_MODE = BSON
+elif args.json:
+    TEST_MODE = JSON
+
+if args.tcp:
+    COMMUNICATION_METHOD = TCP
+elif args.websocket:
+    COMMUNICATION_METHOD = WEBSOCKET
+
+
+
 
 # Prepare the messages to be sent
 # This includes:
