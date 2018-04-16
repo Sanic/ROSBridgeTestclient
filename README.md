@@ -12,7 +12,7 @@ rosrun rospy_tutorials add_two_ints_server
 python BSONTestClient.py --json --tcp
 ```
 
-## How to use the client with BSON
+## How to use the client with BSON and TCP
 ```
 roslaunch rosbridge_server rosbridge_tcp.launch bson_only_mode:=True
 rosrun rospy_tutorials add_two_ints_server
