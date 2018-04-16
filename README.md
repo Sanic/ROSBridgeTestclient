@@ -21,7 +21,7 @@ python BSONTestClient.py --bson --tcp
 
 You can also replace the parameter --tcp with --websocket to use a websocket connection.
 
-##Relevant notes:
+## Relevant notes:
 - Tested with Python 2.7
 - The client assumes that your rosbridge server is running on localhost:9090
 - For demonstration purposes, the client calls the add_two_ints service. Please call "rosrun rospy_tutorials add_two_ints_server" before running this client. 
