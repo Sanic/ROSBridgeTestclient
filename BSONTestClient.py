@@ -6,7 +6,18 @@ import time
 import socket
 import pprint
 import websocket
+import argparse
 
+
+parser = argparse.ArgumentParser(description='ROSBridge test client for JSON and BSON. Checks if a) the client can publish to a topic and b) if a service call can be made.')
+
+parser.add_argument('--tcp', action="store_true", default=False)
+parser.add_argument('--websocket', action="store_true", default=False)
+
+parser.add_argument('--json', action="store_true", default=False)
+parser.add_argument('--bson', action="store_true", default=False)
+print(parser)
+sys.exit(0)
 
 print("BSON-ROSBridge Testclient")
 
@@ -14,7 +25,7 @@ print("BSON-ROSBridge Testclient")
 JSON = "JSON"
 BSON = "BSON"
 TCP = "TCP"
-WEBSOCKETS = "WEBSOCKETS"
+WEBSOCKET = "WEBSOCKET"
 
 # Set the serialization method you want to test
 # TEST_MODE = JSON
@@ -22,7 +33,7 @@ TEST_MODE = BSON
 
 # Set the communication method you want to test
 # COMMUNICATION_METHOD = TCP
-COMMUNICATION_METHOD = WEBSOCKETS
+COMMUNICATION_METHOD = WEBSOCKET
 
 # TCP Parameters
 TCP_IP = '127.0.0.1'
@@ -117,7 +128,7 @@ if COMMUNICATION_METHOD == TCP:
     pprint.pprint( decode_message(data))
     
     s.close()
-elif COMMUNICATION_METHOD == WEBSOCKETS:
+elif COMMUNICATION_METHOD == WEBSOCKET:
     print("Testing Websocket Communication")
     ws = websocket.create_connection(WEBSOCKET_URL)
     websocket_send_wrapper(ws,advertise_msg)
